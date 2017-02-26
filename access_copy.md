@@ -24,6 +24,14 @@ ffmpeg -i pres_master.mov \
    access_derivative.mp4
 ```
 
+<!-- TEST:
+ffmpeg -i interlaced_uncomp.mov \
+   -c:v libx264 -preset ultrafast -pix_fmt yuv420p -profile:v high -level:v 5.0 \
+   -vf scale=interl=1 \
+   -color_primaries bt470bg -color_trc gamma28 -colorspace bt470bg \
+   -c:a libfdk_aac -ar 48000 -b:a 192k \
+   access_derivative_deint.mp4 -->
+
 **Notes**:
 * Approximation of the ADs we made in MediaEncoder at Archives NZ.
 * GOP structure (M=3, N=14) not maintained. For info on setting i-frame & b-frame distance, see [here](https://sites.google.com/site/linuxencoding/x264-ffmpeg-mapping).
