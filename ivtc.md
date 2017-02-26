@@ -1,6 +1,6 @@
 ## Inverse telecine
 
-Inverse telecine: restore 29.97fps video to original film frame rate of 24fps. 
+An **inverse telecine** procedure reverses [3:2 pull down](https://en.wikipedia.org/wiki/Three-two_pull_down) - it restores 29.97fps interlaced video to the original film source's frame rate of 24fps. 
 * Output framerate will actually be 23.976 fps.
 
 ### Single input
