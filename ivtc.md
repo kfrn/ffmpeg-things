@@ -1,6 +1,6 @@
 ## Inverse telecine
 
-An **inverse telecine** procedure reverses [3:2 pull down](https://en.wikipedia.org/wiki/Three-two_pull_down) - it restores 29.97fps interlaced video to the original film source's frame rate of 24fps. 
+An **inverse telecine** procedure reverses [3:2 pull down](https://en.wikipedia.org/wiki/Three-two_pull_down) - it restores 29.97fps interlaced video to the original film source's frame rate of 24fps.
 * Output framerate will actually be 23.976 fps.
 
 ### Single input
@@ -14,7 +14,7 @@ ffmpeg -i inputfile \
 * [Source](https://forum.doom9.org/showthread.php?t=172289) for command
 
 <!-- TEST:
-ffmpeg -i VTS_01_1.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_output.mp4 -->
+ffmpeg -i *.VOB -c:v libx264 -preset veryslow -vf fieldmatch,yadif=deint=interlaced,decimate ivtc_output.mp4 -->
 
 ### Multiple inputs
 
@@ -28,10 +28,6 @@ ffmpeg -i concat:first.VOB\|second.VOB\|third.VOB \
        -vf fieldmatch,yadif=deint=interlaced,decimate \
        deinterlaced_concat_output.mp4
 ```
-
-<!-- TEST:
-ffmpeg -i concat:VTS_01_1.VOB\|VTS_01_2.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_concat.mp4 -->
-<!-- ffmpeg -i concat:VTS_01_0.VOB\|VTS_01_1.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_concat_just2.mp4 -->
 
 #### 2. List files in `.txt`
 
@@ -48,9 +44,6 @@ where _inputs.txt_ contains the list of VOBs/other files to concat, in the forma
 file './second.VOB'  
 . . .  
 file './last.VOB'</blockquote>
-
-<!-- TEST:
-ffmpeg -f concat -safe 0 -i inputs.txt -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_concat_list.mp4 -->
 
 **Note**: Of the first two methods, ffmpeg seemed happier with no.1 (inline concat) than no. 2 (`.txt` input). Unsure why.
 
@@ -69,7 +62,6 @@ function IVTCfiles() {
   # Set variables if no arguments are passed in: file extension is VOB and output filename is "output"
   extension=${1:-"VOB"}
   filename=${2:-"output"}
-  echo $filename
 
   # Transcode individual files
   for item in *.$extension;
@@ -95,3 +87,7 @@ function IVTCfiles() {
 # Call function: IVTCfiles [<extension> <outputfilename>]
 IVTCfiles VOB mybestfile
 ```
+
+**Note**: ffmpeg does a pretty good job of IVTC with the filter `-vf fieldmatch,yadif=deint=interlaced,decimate`, but I've observed that results also depend on the encoding speed, the qualities of the source, etc.  
+In particular, at high encoding speeds, it's reasonably common for some frames not to be successfully deinterlaced.  
+**⤷** In this case, ffmpeg prints a message like `[Parsed_fieldmatch_0 @ 0x34d63e0] Frame #20 at 1.23394 is still interlaced`.
