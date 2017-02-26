@@ -40,9 +40,9 @@ ffmpeg -f concat -safe 0 -i inputs.txt \
 
 where _inputs.txt_ contains the list of VOBs/other files to concat, in the format:
 
-<blockquote>file './first.VOB'  
-file './second.VOB'  
-. . .  
+<blockquote>file './first.VOB'<br>  
+file './second.VOB'<br>   
+. . .<br>   
 file './last.VOB'</blockquote>
 
 **Note**: Of the first two methods, ffmpeg seemed happier with no.1 (inline concat) than no. 2 (`.txt` input). Unsure why.
