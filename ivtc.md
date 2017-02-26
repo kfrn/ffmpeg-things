@@ -1,8 +1,8 @@
 ## Inverse telecine
 
-Inverse telecine: restore 29.97fps video to original film frame rate of 24fps. (Output framerate will actually be 23.976 fps).
+Inverse telecine: restore 29.97fps video to original film frame rate of 24fps. * Output framerate will actually be 23.976 fps.
 
-#### Single input:  
+### Single input
 
 ```
 ffmpeg -i inputfile \
@@ -15,11 +15,11 @@ ffmpeg -i inputfile \
 <!-- TEST:
 ffmpeg -i VTS_01_1.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_output.mp4 -->
 
-#### Multiple inputs:
+### Multiple inputs
 
 i.e., `.VOB`s from DVD.
 
-##### 1. List files inline
+#### 1. List files inline
 
 ```
 ffmpeg -i concat:first.VOB\|second.VOB\|third.VOB \
@@ -32,7 +32,7 @@ ffmpeg -i concat:first.VOB\|second.VOB\|third.VOB \
 ffmpeg -i concat:VTS_01_1.VOB\|VTS_01_2.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_concat.mp4 -->
 <!-- ffmpeg -i concat:VTS_01_0.VOB\|VTS_01_1.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_concat_just2.mp4 -->
 
-##### 2. List files in `.txt`
+#### 2. List files in `.txt`
 
 ```
 ffmpeg -f concat -safe 0 -i inputs.txt \
@@ -53,12 +53,12 @@ ffmpeg -f concat -safe 0 -i inputs.txt -c:v libx264 -preset veryfast -vf fieldma
 
 **Note**: Of the first two methods, ffmpeg seemed happier with no.1 (inline concat) than no. 2 (`.txt` input). Unsure why.
 
-##### 3. Use a loop to work iteratively
+#### 3. Use a loop to work iteratively
 
 The ffmpeg wiki entry on concatenation [lists three methods](https://trac.ffmpeg.org/wiki/Concatenate#demuxer) by which you can avoid creating a list file and do the whole thing in a single line. However, I did not yet get any of them to work for IVTC + concat.  
 My current solution is the following:
 
-##### 4. Automate via bash script
+#### 4. Automate via bash script
 
 ```
 #!/bin/bash
@@ -72,7 +72,7 @@ function IVTCfiles() {
 
   # Transcode individual files
   for item in *.$extension;
-    do ffmpeg -i $item -c:v libx264 -preset ultrafast \
+    do ffmpeg -i $item -c:v libx264 \
               -vf fieldmatch,yadif=deint=interlaced,decimate \
               "${item%.$extension}_ivtctemp.mp4";
     echo "Created '${item%.$extension}_ivtctemp.mp4'";
