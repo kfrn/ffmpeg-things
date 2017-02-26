@@ -1,6 +1,7 @@
 ## Inverse telecine
 
-Inverse telecine: restore 29.97fps video to original film frame rate of 24fps. * Output framerate will actually be 23.976 fps.
+Inverse telecine: restore 29.97fps video to original film frame rate of 24fps. 
+* Output framerate will actually be 23.976 fps.
 
 ### Single input
 
