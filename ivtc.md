@@ -17,7 +17,7 @@ ffmpeg -i VTS_01_1.VOB -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=
 
 #### Multiple inputs:
 
-I.e., `.VOB`s from DVD.
+i.e., `.VOB`s from DVD.
 
 ##### 1. List files inline
 
@@ -51,28 +51,41 @@ file './last.VOB'</blockquote>
 <!-- TEST:
 ffmpeg -f concat -safe 0 -i inputs.txt -c:v libx264 -preset veryfast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_concat_list.mp4 -->
 
-##### 3. Use a loop work iteratively - TBA
+**Note**: Of the first two methods, ffmpeg seemed happier with no.1 (inline concat) than no. 2 (`.txt` input). Unsure why.
 
-<!-- The all-in-one method, [using a loop](https://trac.ffmpeg.org/wiki/Concatenate#demuxer). The following will concat, transcode and IVTC all `.VOB` files in a directory:
+##### 3. Use a loop to work iteratively
 
-```
-ffmpeg -f concat -safe 0 \
-       -i <(for f in ./*.VOB; do echo "file '$PWD/$f'"; done) \
-       -c:v libx264 \
-       -vf fieldmatch,yadif=deint=interlaced,decimate \
-       deinterlaced_output.mp4
+The ffmpeg wiki entry on concatenation [lists three methods](https://trac.ffmpeg.org/wiki/Concatenate#demuxer) by which you can avoid creating a list file and do the whole thing in a single line. However, I did not yet get any of them to work for IVTC + concat.  
+My current solution is the following:
+
+##### 4. Automate via bash script
 
 ```
+#!/bin/bash
 
-TEST 1:
-ffmpeg -f concat -safe 0 -i <(for f in ./*.VOB; do echo "file '$PWD/$f'"; done) -c:v libx264 -preset ultrafast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_output_loop.mp4
-// The above doesn't seem to concat :(
+function IVTCfiles() {
 
-TEST 2
-ffmpeg -f concat -safe 0 -i <(find . -name '*.VOB' -printf "file '$PWD/%p'\n") -c:v libx264 -preset ultrafast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_output_loop_test2.mp4
-// in prog
+  # Transcode individual files
+  for item in *.$1;
+    do ffmpeg -i $item -c:v libx264 -preset ultrafast \
+              -vf fieldmatch,yadif=deint=interlaced,decimate \
+              "${item%.$1}_ivtctemp.mp4";
+    echo "Created '${item%.$1}_ivtctemp.mp4'";
+    done
 
-TEST 3
-ffmpeg -f concat -safe 0 -i <(printf "file '$PWD/%s'\n" ./*.VOB) -c:v libx264 -preset ultrafast -vf fieldmatch,yadif=deint=interlaced,decimate deinterlaced_output_loop.mp4
+  # Concat outputs to one MP4 file
+  ffmpeg -f concat -safe 0 -i \
+    <(for f in ./*ivtctemp.mp4; do echo "file '$PWD/$f'"; done) \
+      -map 0 -c copy \
+      $2_full.mp4;
+  echo "Individual IVTCed files concatenated into $2.mp4";
 
-**Note**: Preferred method is no. 3, but of the first two, ffmpeg seemed happier with no.1 (inline concat) than no. 2 (`.txt` input). Unsure why. -->
+  # Delete interim MP4s
+  for g in ./*ivtctemp.mp4;
+    do echo "Deleting $g ..." && rm -v $g;
+    done
+}
+
+# Call function: IVTCfiles <extension> <outputfilename>
+IVTCfiles VOB mybestfile
+```
