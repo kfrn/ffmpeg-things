@@ -65,20 +65,25 @@ My current solution is the following:
 
 function IVTCfiles() {
 
+  # Set variables if no arguments are passed in: file extension is VOB and output filename is "output"
+  extension=${1:-"VOB"}
+  filename=${2:-"output"}
+  echo $filename
+
   # Transcode individual files
-  for item in *.$1;
+  for item in *.$extension;
     do ffmpeg -i $item -c:v libx264 -preset ultrafast \
               -vf fieldmatch,yadif=deint=interlaced,decimate \
-              "${item%.$1}_ivtctemp.mp4";
-    echo "Created '${item%.$1}_ivtctemp.mp4'";
+              "${item%.$extension}_ivtctemp.mp4";
+    echo "Created '${item%.$extension}_ivtctemp.mp4'";
     done
 
   # Concat outputs to one MP4 file
   ffmpeg -f concat -safe 0 -i \
     <(for f in ./*ivtctemp.mp4; do echo "file '$PWD/$f'"; done) \
       -map 0 -c copy \
-      $2_full.mp4;
-  echo "Individual IVTCed files concatenated into $2.mp4";
+      $filename.mp4;
+  echo "Individual IVTCed files concatenated into $filename.mp4";
 
   # Delete interim MP4s
   for g in ./*ivtctemp.mp4;
@@ -86,6 +91,6 @@ function IVTCfiles() {
     done
 }
 
-# Call function: IVTCfiles <extension> <outputfilename>
+# Call function: IVTCfiles [<extension> <outputfilename>]
 IVTCfiles VOB mybestfile
 ```
