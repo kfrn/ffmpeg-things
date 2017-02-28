@@ -21,6 +21,7 @@ ffmpeg -i inputfile \
 * Filters:
   * [`fieldmatch`](https://ffmpeg.org/ffmpeg-filters.html#fieldmatch): field matching filter for IVTC - reconstructs the progressive frames from a telecined stream.
   * [`yadif`](https://ffmpeg.org/ffmpeg-filters.html#yadif-1): ‘yet another deinterlacing filter’. Deinterlaces the video.
+    * **Note**: ffmpeg includes several deinterlacers apart from `yadif`: [`bwdif`](https://ffmpeg.org/ffmpeg-filters.html#bwdif), [`w3fdif`](https://ffmpeg.org/ffmpeg-filters.html#w3fdif), [`kerndeint`](https://ffmpeg.org/ffmpeg-filters.html#kerndeint), and [`nnedi`](https://ffmpeg.org/ffmpeg-filters.html#nnedi)</a>. So far I've just tested `yadif`.
   * [`decimate`](https://ffmpeg.org/ffmpeg-filters.html#decimate-1): deletes duplicated frames.
 * [Source](https://forum.doom9.org/showthread.php?t=172289) for basis of command
 
