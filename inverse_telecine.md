@@ -107,7 +107,7 @@ In particular, at high encoding speeds it's reasonably common for some frames no
 
 * The [original post](https://forum.doom9.org/showthread.php?t=172289) where I got info on IVTC in ffmpeg used `yadif=deint=interlaced`, which only deinterlaces frames marked as interlaced. (See [ffmpeg docs](https://ffmpeg.org/ffmpeg-filters.html#yadif-1)). The `yadif` default is to deinterlace all frames. I had better results with `yadif`'s defaults. The `yadif=deint=interlaced` output looked pretty good, but had some artefacting that wasn't visible in the `yadif` default output (see GIFs below).
 
-* `yadif` also has a mode that outputs one frame for each field (`yadif=mode=1`), which may look better than the default mode (`yadif=mode=0`, which outputs one frame for each frame). Results were also good.
+* `yadif` also has a mode that outputs one frame for each field (`yadif=mode=1`), which may look better than the default mode (`yadif=mode=0`, which outputs one frame for each frame). The framerate is therefore doubled. Results were also good.
 
 ### Comparison GIFs
 
