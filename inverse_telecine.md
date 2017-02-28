@@ -18,6 +18,10 @@ ffmpeg -i inputfile \
        -vf "fieldmatch,yadif,decimate" \
        ivtc_output.mp4
 ```
+* Filters:
+  * [`fieldmatch`](https://ffmpeg.org/ffmpeg-filters.html#fieldmatch): field matching filter for IVTC - reconstructs the progressive frames from a telecined stream.
+  * [`yadif`](https://ffmpeg.org/ffmpeg-filters.html#yadif-1): ‘yet another deinterlacing filter’. Deinterlaces the video.
+  * [`decimate`](https://ffmpeg.org/ffmpeg-filters.html#decimate-1): deletes duplicated frames.
 * [Source](https://forum.doom9.org/showthread.php?t=172289) for basis of command
 
 <!-- TEST:
