@@ -57,8 +57,6 @@ file './second.VOB'<br>
 . . .<br>   
 file './last.VOB'</blockquote>
 
-**Note**: Of the first two methods, ffmpeg seemed happier with no.1 (inline concat) than no. 2 (`.txt` input). Unsure why.
-
 #### 3. Use a loop to work iteratively
 
 The ffmpeg wiki entry on concatenation [lists three methods](https://trac.ffmpeg.org/wiki/Concatenate#demuxer) by which you can avoid creating a list file and do the whole thing in a single line. However, I did not yet get any of them to work for IVTC + concat.  
