@@ -65,7 +65,7 @@ My current solution is the following:
 #### 4. Automate via bash script
 
 ```
-#!/bin/bash
+#!/usr/bin/env bash
 
 function IVTCfiles() {
 
@@ -74,23 +74,23 @@ function IVTCfiles() {
   filename=${2:-"ivtc_output"}
 
   # Transcode individual files
-  for item in *.$extension;
-    do ffmpeg -i $item -c:v libx264 \
-              -vf "fieldmatch,yadif,decimate" \
-              "${item%.$extension}_ivtctemp.mp4";
-    echo "Created '${item%.$extension}_ivtctemp.mp4'";
-    done
+  for item in *.$extension; do
+    ffmpeg -i $item -c:v libx264 \
+           -vf "fieldmatch,yadif,decimate" \
+           "${item%.$extension}_ivtctemp.mp4"
+    echo "Created '${item%.$extension}_ivtctemp.mp4'"
+  done
 
   # Concat outputs to one MP4 file
   ffmpeg -f concat -safe 0 -i \
-    <(for f in ./*ivtctemp.mp4; do echo "file '$PWD/$f'"; done) \
-      -map 0 -c copy \
-      $filename.mp4;
-  echo "Individual IVTCed files concatenated into $filename.mp4";
+         <(for f in ./*ivtctemp.mp4; do echo "file '$PWD/$f'"; done) \
+         -map 0 -c copy \
+         $filename.mp4
+  echo "Individual IVTCed files concatenated into $filename.mp4"
 
   # Delete interim MP4s
-  for g in ./*ivtctemp.mp4;
-    do echo "Deleting $g ..." && rm -v $g;
+  for g in ./*ivtctemp.mp4; do
+    echo "Deleting $g ..." && rm -v $g
     done
 }
 
