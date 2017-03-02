@@ -91,7 +91,7 @@ function IVTCfiles() {
   # Delete interim MP4s
   for g in ./*ivtctemp.mp4; do
     echo "Deleting $g ..." && rm -v $g
-    done
+  done
 }
 
 # Call function: IVTCfiles [<extension> <outputfilename>]
