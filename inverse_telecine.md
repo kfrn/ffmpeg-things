@@ -11,6 +11,8 @@ An **inverse telecine** procedure reverses the [3:2 pull down](https://en.wikipe
 
 **Note**: this script can also be used to restore other framerates, such as for silent films with non-standard framerates.
 
+**Update 05 Mar**: I've now added this script to [ffmprovisr](https://amiaopensource.github.io/ffmprovisr/). [Check it out](https://amiaopensource.github.io/ffmprovisr/#inverse-telecine)!
+
 ### Single input
 
 Basic script:
