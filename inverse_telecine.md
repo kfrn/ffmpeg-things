@@ -120,7 +120,7 @@ Original video, showing artefacts due to the 3:2 pulldown process:
 IVTC with `yadif` defaults:  
 ![IVTC with yadif defaults](./images/ivtc_video_yadif-defaults.gif "IVTC with yadif defaults")
 
-IVTC with `yadif=deint=interlaced`:  
+IVTC with `yadif=deint=interlaced`. Note artefacting around the arms:    
 ![IVTC with yadif=deint=interlaced](./images/ivtc_video_yadif-deint-interlaced.gif "IVTC with yadif=deint=interlaced")
 
 IVTC with `yadif=mode=1`:  
