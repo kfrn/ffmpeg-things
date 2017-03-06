@@ -114,7 +114,7 @@ In particular, at high encoding speeds it's reasonably common for some frames no
 
 ### Comparison GIFs
 
-Original video:  
+Original video, showing artefacts due to the 3:2 pulldown process:  
 ![Original video](./images/original_video.gif "Original video")
 
 IVTC with `yadif` defaults:  
