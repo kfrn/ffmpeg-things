@@ -28,6 +28,7 @@ ffmpeg -i pres_master.mov \
 
 **Notes**:
 * Approximation of the ADs we made in MediaEncoder at Archives NZ.
+* Assumes original is a PAL Rec.601 file. The flags referring to colourspace embed metadata about these parameters, they don't control what colourspace the file actually is - in order to convert between colourspaces, the ffmpeg `colormatrix` or `colorspace` filter must be applied.
 * GOP structure (M=3, N=14) not maintained. For info on setting i-frame & b-frame distance with `libx264`, see [here](https://sites.google.com/site/linuxencoding/x264-ffmpeg-mapping).
 * Not setting bitrate, crf, preset, etc. Using libx264 [default settings](https://trac.ffmpeg.org/wiki/Encode/H.264) of crf = 23 and preset = medium.
   * To set bitrate of 2 Mbps, add `-b:v 1808k -bufsize 1808k` (2MB - 192K for audio).
